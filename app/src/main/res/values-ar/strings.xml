@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">انجاد</string>
+    <string name="login">Login</string>
+    <string name="skip">skip</string>
+    <string name="code">code</string>
+    <string name="phone">phone</string>
+    <string name="password">password</string>
+    <string name="field_req">Field required</string>
+    <string name="Open_a_new_communication">Open a new communication</string>
+    <string name="Edit_a_report">Edit a report</string>
+    <string name="show_all">show_all</string>
+    <string name="name">name</string>
+    <string name="pass_short">password is short</string>
+    <string name="or">or</string>
+    <string name="signup">Sign Up</string>
+    <string name="you_already_have_an_account_log_in">you already  have an account log in</string>
+    <string name="numReport">Number Report</string>
+    <string name="link">Link ( From google map )</string>
+    <string name="send">Send</string>
+</resources>

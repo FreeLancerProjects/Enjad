@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    >
+
+    <data>
+        <variable
+            name="backListener"
+            type="com.developer.enjad.interfaces.Listeners.BackListener" />
+        <variable
+            name="lang"
+            type="String" />
+        <variable
+            name="model"
+            type="com.developer.enjad.models.NewReport" />
+        <variable
+            name="newRepListener"
+            type="com.developer.enjad.interfaces.Listeners.NewRepListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities_fragments.activity_choose_order_type.ChooseOrderTypeActivity"
+        android:background="@color/gray1"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/colorPrimary"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:onClick="@{()->backListener.back()}"
+                >
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_arrow_left"
+                    android:tint="@color/white"
+                    android:padding="5dp"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:rotation='@{lang.equals("ar")?180:0}'
+                    />
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/white"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:textSize="16sp"
+                    android:text="@string/Open_a_new_communication"
+                    />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:fitsSystemWindows="true"
+            android:fillViewport="true"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+
+                >
+
+
+                <LinearLayout
+                    android:id="@+id/llNumReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:text="@string/numReport"
+
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/rounded_corner"
+                        android:layout_marginTop="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center_vertical"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+
+                        >
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/ic_card"
+                            android:padding="5dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:tint="@color/colorPrimary"
+
+                            />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:background="@color/white"
+                            android:hint="@string/numReport"
+                            android:textColorHint="@color/gray4"
+                            android:text="@={model.number}"
+                            error="@{model.error_number}"
+                            android:inputType="number"
+
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="@string/link"
+
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:padding="8dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:text="@={model.link}"
+                    error="@{model.error_link}"
+
+                    />
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/btn_login"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="15sp"
+                    android:text="@string/send"
+                    android:onClick="@{()->newRepListener.checkNewReportData(model)}"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
