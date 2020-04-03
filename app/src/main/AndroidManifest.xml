@@ -18,15 +18,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activites_fragments.activity_new_comunication.NewCommunicationActivity"></activity>
-        <activity android:name=".activites_fragments.activity_edit_report.EditReportActivity" />
-        <activity android:name=".activites_fragments.activity_sign_up.SignUpActivity" />
+
+
+        <activity android:name=".activities_fragments.activity_new_communication.NewCommunicationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            />
+        <activity android:name=".activities_fragments.activity_edit_report.EditReportActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            />
+        <activity android:name=".activities_fragments.activity_sign_up.SignUpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            />
         <activity
-            android:name=".activites_fragments.activity_main.MainActivity"
+            android:name=".activities_fragments.activity_home.HomeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activites_fragments.activity_splash.SplashActivity"
+            android:name=".activities_fragments.activity_splash.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <intent-filter>
@@ -36,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites_fragments.activity_login.LoginActivity"
+            android:name=".activities_fragments.activity_login.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     </application>

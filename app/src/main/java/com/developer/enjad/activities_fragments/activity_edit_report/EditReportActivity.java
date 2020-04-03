@@ -1,4 +1,4 @@
-package com.developer.enjad.activites_fragments.activity_edit_report;
+package com.developer.enjad.activities_fragments.activity_edit_report;
 
 import androidx.appcompat.app.AppCompatActivity;
 

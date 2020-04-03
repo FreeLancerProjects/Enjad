@@ -1,5 +1,6 @@
-package com.developer.enjad.activites_fragments.activity_login;
+package com.developer.enjad.activities_fragments.activity_login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +16,21 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.developer.enjad.activites_fragments.activity_main.MainActivity;
 import com.developer.enjad.R;
-import com.developer.enjad.activites_fragments.activity_sign_up.SignUpActivity;
+import com.developer.enjad.activities_fragments.activity_home.HomeActivity;
+import com.developer.enjad.activities_fragments.activity_sign_up.SignUpActivity;
 import com.developer.enjad.databinding.FragmentSignInBinding;
 import com.developer.enjad.interfaces.Listeners;
 import com.developer.enjad.models.LoginModel;
+import com.developer.enjad.models.UserModel;
+import com.developer.enjad.preferences.Preferences;
 import com.developer.enjad.share.Common;
+import com.developer.enjad.tags.Tags;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
@@ -36,6 +45,8 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
     private String lang;
     private CountryPicker countryPicker;
     private LoginModel loginModel;
+    private DatabaseReference dRef;
+    private Preferences preferences;
 
 
 
@@ -52,6 +63,8 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
     }
 
     private void initView() {
+        dRef = FirebaseDatabase.getInstance().getReference(Tags.DATABASE_NAME);
+        preferences = Preferences.newInstance();
         loginModel = new LoginModel();
         activity = (LoginActivity) getActivity();
         Paper.init(activity);
@@ -65,6 +78,7 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
         binding.btnSignUp.setOnClickListener(view -> {
             Intent intent = new Intent(activity, SignUpActivity.class);
             startActivity(intent);
+            activity.finish();
 
 
         });
@@ -131,12 +145,54 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
     }
 
     private void login(LoginModel loginModel) {
+        ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        String phone = loginModel.getPhone_code()+loginModel.getPhone();
+        dRef.child(Tags.TABLE_USERS).child(phone)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        dialog.dismiss();
+                        if (dataSnapshot.getValue()!=null)
+                        {
+                            UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                            if (userModel!=null)
+                            {
+                                if (loginModel.getPassword().equals(userModel.getPassword()))
+                                {
+                                    preferences.create_update_userData(activity,userModel);
+                                    navigateToHomeActivity();
+                                }else
+                                    {
+                                        Common.CreateDialogAlert(activity,getString(R.string.inc_pass));
+                                    }
+                            }
+                        }else
+                            {
+                                Common.CreateDialogAlert(activity,getString(R.string.user_not_found));
+                            }
+                    }
 
-        Intent intent = new Intent(activity, MainActivity.class);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+
+                });
+
+
+
+
+    }
+
+    private void navigateToHomeActivity()
+    {
+        Intent intent = new Intent(activity, HomeActivity.class);
         startActivity(intent);
         activity.finish();
     }
-
 
 
 

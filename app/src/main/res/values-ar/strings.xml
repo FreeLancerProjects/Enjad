@@ -18,4 +18,14 @@
     <string name="numReport">رقم البلاغ</string>
     <string name="link">رابط الموقع ( قوقل ماب )</string>
     <string name="send">ارسال </string>
+    <string name="confirmation_code">كود التحقق</string>
+    <string name="confirm">تحقق</string>
+    <string name="resend">أعد إرسال</string>
+    <string name="notifications">إشعارات</string>
+    <string name="ok">حسنا!</string>
+    <string name="field_required">الحقل مطلوب</string>
+    <string name="failed">فشل</string>
+    <string name="wait">إنتظر قليلا...</string>
+    <string name="user_not_found">المستخدم غير موجود</string>
+    <string name="inc_pass">كلمة المرور غير صحيحة</string>
 </resources>

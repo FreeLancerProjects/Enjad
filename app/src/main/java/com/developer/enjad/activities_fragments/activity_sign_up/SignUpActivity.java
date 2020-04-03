@@ -1,52 +1,35 @@
-package com.developer.enjad.activites_fragments.activity_sign_up;
+package com.developer.enjad.activities_fragments.activity_sign_up;
 
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 
 import com.developer.enjad.R;
-import com.developer.enjad.activites_fragments.activity_login.LoginActivity;
-import com.developer.enjad.activites_fragments.activity_main.MainActivity;
+import com.developer.enjad.activities_fragments.activity_home.HomeActivity;
+import com.developer.enjad.activities_fragments.activity_login.LoginActivity;
 import com.developer.enjad.databinding.ActivitySignUpBinding;
 import com.developer.enjad.interfaces.Listeners;
 import com.developer.enjad.language.LanguageHelper;
 import com.developer.enjad.models.SignUpModel;
+import com.developer.enjad.models.UserModel;
 import com.developer.enjad.preferences.Preferences;
 import com.developer.enjad.share.Common;
 import com.developer.enjad.tags.Tags;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mukesh.countrypicker.CountriesAdapter;
 import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -55,9 +38,7 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
     private ActivitySignUpBinding binding;
     private String lang = "en";
     private Preferences preferences;
-    private FirebaseAuth mAuth;
     private DatabaseReference dRef;
-    private AlertDialog dialog;
     private SignUpModel signUpModel;
     private CountryPicker countryPicker;
 
@@ -72,24 +53,19 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         initView();
     }
 
     private void initView() {
         signUpModel = new SignUpModel();
-        binding.setShowCountryListener(this);
-        binding.setSignupListener(this);
-        createCountryDialog();
-        mAuth = FirebaseAuth.getInstance();
-        dRef = FirebaseDatabase.getInstance().getReference(Tags.DATABASE_NAME);
         binding.setBackListener(this);
         binding.setLang(lang);
+        binding.setShowCountryListener(this);
         binding.setSignupListener(this);
-
-
+        binding.setSignUpModel(signUpModel);
+        createCountryDialog();
+        dRef = FirebaseDatabase.getInstance().getReference(Tags.DATABASE_NAME);
 
         binding.edtPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,23 +122,51 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
 
     }
 
-    private void navigateToMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
     @Override
     public void checkDataSignUp() {
         if (signUpModel.isDataValid(this))
         {
             Common.CloseKeyBoard(this,binding.edtName);
-            navigateToMainActivity();
+            signUp();
         }
     }
 
+    private void signUp() {
+
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        String user_id = dRef.child(Tags.TABLE_USERS).push().getKey();
+        String phone = signUpModel.getPhone_code()+signUpModel.getPhone();
+        UserModel userModel = new UserModel(user_id,signUpModel.getName(),signUpModel.getPassword(),phone,1);
+
+        dRef.child(Tags.TABLE_USERS).child(phone)
+                .setValue(userModel)
+                .addOnSuccessListener(aVoid -> {
+                    dialog.dismiss();
+                    preferences.create_update_userData(this,userModel);
+                    navigateToHomeActivity();
+                }).addOnFailureListener(e -> {
+                    dialog.dismiss();
+                    if (e.getMessage()!=null)
+                    {
+                        Common.CreateDialogAlert(this,e.getMessage());
+                    }else
+                        {
+                            Toast.makeText(this,getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                        }
+                });
+
+    }
 
 
-
-
+    private void navigateToHomeActivity(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

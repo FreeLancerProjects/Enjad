@@ -1,4 +1,4 @@
-package com.developer.enjad.activites_fragments.activity_login;
+package com.developer.enjad.activities_fragments.activity_login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

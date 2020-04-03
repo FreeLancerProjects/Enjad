@@ -1,4 +1,4 @@
-package com.developer.enjad.activites_fragments.activity_splash;
+package com.developer.enjad.activities_fragments.activity_splash;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.developer.enjad.activites_fragments.activity_main.MainActivity;
+import com.developer.enjad.activities_fragments.activity_home.HomeActivity;
 import com.developer.enjad.R;
-import com.developer.enjad.activites_fragments.activity_login.LoginActivity;
+import com.developer.enjad.activities_fragments.activity_login.LoginActivity;
 import com.developer.enjad.databinding.ActivitySplashBinding;
 import com.developer.enjad.language.LanguageHelper;
 import com.developer.enjad.preferences.Preferences;
@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
                 String session = preferences.getSession(SplashActivity.this);
                 if (session.equals(Tags.session_login))
                 {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 }else

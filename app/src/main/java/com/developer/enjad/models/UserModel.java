@@ -8,15 +8,17 @@ public class UserModel implements Serializable {
     private String name;
     private String password;
     private String phone;
+    private int user_type;
 
     public UserModel() {
     }
 
-    public UserModel(String id, String name, String password, String phone) {
+    public UserModel(String id, String name, String password, String phone, int user_type) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.phone = phone;
+        this.user_type = user_type;
     }
 
     public String getId() {
@@ -49,5 +51,13 @@ public class UserModel implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(int user_type) {
+        this.user_type = user_type;
     }
 }

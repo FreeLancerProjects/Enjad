@@ -1,24 +1,22 @@
-package com.developer.enjad.activites_fragments.activity_main;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
+package com.developer.enjad.activities_fragments.activity_home;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.developer.enjad.R;
-import com.developer.enjad.activites_fragments.activity_edit_report.EditReportActivity;
-import com.developer.enjad.activites_fragments.activity_new_comunication.NewCommunicationActivity;
-import com.developer.enjad.activites_fragments.activity_sign_up.SignUpActivity;
-import com.developer.enjad.databinding.ActivityLoginBinding;
-import com.developer.enjad.databinding.ActivityMainBinding;
+import com.developer.enjad.activities_fragments.activity_edit_report.EditReportActivity;
+import com.developer.enjad.activities_fragments.activity_new_communication.NewCommunicationActivity;
+import com.developer.enjad.databinding.ActivityHomeBinding;
 import com.developer.enjad.language.LanguageHelper;
 
 import io.paperdb.Paper;
 
-public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
+public class HomeActivity extends AppCompatActivity {
+    private ActivityHomeBinding binding;
     private String lang;
 
 
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         initView();
     }

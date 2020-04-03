@@ -11,8 +11,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.developer.enjad.R;
+import com.developer.enjad.databinding.DialogAlertBinding;
 
 public class Common {
 
@@ -29,6 +31,23 @@ public class Common {
         }
 
 
+    }
+
+    public static void CreateDialogAlert(Context context,String msg) {
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .create();
+
+        DialogAlertBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_alert, null, false);
+
+        binding.tvMsg.setText(msg);
+        binding.btnCancel.setOnClickListener(v -> dialog.dismiss()
+
+        );
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(binding.getRoot());
+        dialog.show();
     }
 
 

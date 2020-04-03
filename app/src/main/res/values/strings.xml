@@ -17,4 +17,14 @@
     <string name="numReport">Number Report</string>
     <string name="link">Link ( From google map )</string>
     <string name="send">Send</string>
+    <string name="confirmation_code">Confirmation code</string>
+    <string name="confirm">Confirm</string>
+    <string name="resend">Resend</string>
+    <string name="notifications">Notifications</string>
+    <string name="ok">OK</string>
+    <string name="field_required">Field Required</string>
+    <string name="failed">Failed</string>
+    <string name="wait">Wait...</string>
+    <string name="user_not_found">User not found</string>
+    <string name="inc_pass">Incorrect Password</string>
 </resources>

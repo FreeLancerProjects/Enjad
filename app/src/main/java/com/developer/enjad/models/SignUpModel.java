@@ -2,28 +2,21 @@ package com.developer.enjad.models;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
 
-
 import com.developer.enjad.R;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SignUpModel extends BaseObservable implements Serializable {
 
     private String name;
     private String phone_code;
     private String phone;
-
     private int user_type;
     private String password;
 
@@ -44,7 +37,6 @@ public class SignUpModel extends BaseObservable implements Serializable {
         if (!name.trim().isEmpty() &&
                 !phone_code.trim().isEmpty() &&
                 !phone.trim().isEmpty() &&
-                user_type != 0 &&
                 password.length() >= 6
 
         ) {

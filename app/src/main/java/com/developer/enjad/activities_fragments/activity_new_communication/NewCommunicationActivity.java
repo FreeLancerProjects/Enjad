@@ -1,4 +1,4 @@
-package com.developer.enjad.activites_fragments.activity_new_comunication;
+package com.developer.enjad.activities_fragments.activity_new_communication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
