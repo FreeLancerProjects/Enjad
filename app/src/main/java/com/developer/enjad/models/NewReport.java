@@ -21,15 +21,24 @@ public class NewReport extends BaseObservable {
 
 
 
+    public NewReport(String id,String number,String link) {
+        this.id=id;
+        this.number = number;
+        notifyPropertyChanged(BR.number);
+        this.link=link;
+        notifyPropertyChanged(BR.link);
+
+
+    }
+
     public NewReport() {
-        this.number = "";
+        this.number ="";
         notifyPropertyChanged(BR.number);
         this.link="";
         notifyPropertyChanged(BR.link);
 
 
     }
-
 
 
     @Bindable
@@ -43,6 +52,13 @@ public class NewReport extends BaseObservable {
 
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Bindable
     public String getLink() {

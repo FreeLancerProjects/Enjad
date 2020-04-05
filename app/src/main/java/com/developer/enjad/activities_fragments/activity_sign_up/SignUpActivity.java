@@ -43,11 +43,10 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
     private CountryPicker countryPicker;
 
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase,"en"));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, "en"));
     }
 
     @Override
@@ -58,6 +57,7 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
     }
 
     private void initView() {
+        preferences = Preferences.newInstance();
         signUpModel = new SignUpModel();
         binding.setBackListener(this);
         binding.setLang(lang);
@@ -85,7 +85,6 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
                 }
             }
         });
-
 
 
     }
@@ -124,45 +123,42 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
 
     @Override
     public void checkDataSignUp() {
-        if (signUpModel.isDataValid(this))
-        {
-            Common.CloseKeyBoard(this,binding.edtName);
+        if (signUpModel.isDataValid(this)) {
+            Common.CloseKeyBoard(this, binding.edtName);
             signUp();
         }
     }
 
     private void signUp() {
 
-        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
 
         String user_id = dRef.child(Tags.TABLE_USERS).push().getKey();
-        String phone = signUpModel.getPhone_code()+signUpModel.getPhone();
-        UserModel userModel = new UserModel(user_id,signUpModel.getName(),signUpModel.getPassword(),phone,1);
+        String phone = signUpModel.getPhone_code() + signUpModel.getPhone();
+        UserModel userModel = new UserModel(user_id, signUpModel.getName(), signUpModel.getPassword(), phone, 1);
 
         dRef.child(Tags.TABLE_USERS).child(phone)
                 .setValue(userModel)
                 .addOnSuccessListener(aVoid -> {
                     dialog.dismiss();
-                    preferences.create_update_userData(this,userModel);
+                    preferences.create_update_userData(this, userModel);
                     navigateToHomeActivity();
                 }).addOnFailureListener(e -> {
-                    dialog.dismiss();
-                    if (e.getMessage()!=null)
-                    {
-                        Common.CreateDialogAlert(this,e.getMessage());
-                    }else
-                        {
-                            Toast.makeText(this,getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+            if (e.getMessage() != null) {
+                Common.CreateDialogAlert(this, e.getMessage());
+            } else {
+                Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
-                        }
-                });
+            }
+        });
 
     }
 
 
-    private void navigateToHomeActivity(){
+    private void navigateToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
@@ -171,10 +167,8 @@ public class SignUpActivity extends AppCompatActivity implements Listeners.BackL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==100)
-        {
-            if (resultCode==RESULT_OK)
-            {
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
 
                 binding.setSignUpModel(signUpModel);
 

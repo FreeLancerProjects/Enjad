@@ -10,6 +10,7 @@ public class Tags {
 
     public static final String DATABASE_NAME ="Enjad_DataBase";
     public static final String TABLE_USERS ="Users";
+    public static final String TABLE_REPORTS ="Reports";
     public static final String TABLE_SETTINGS ="Settings";
 
 
