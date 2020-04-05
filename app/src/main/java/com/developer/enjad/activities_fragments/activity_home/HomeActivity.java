@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,15 @@ import androidx.databinding.DataBindingUtil;
 
 import com.developer.enjad.R;
 import com.developer.enjad.activities_fragments.activity_edit_report.EditReportActivity;
+import com.developer.enjad.activities_fragments.activity_login.LoginActivity;
 import com.developer.enjad.activities_fragments.activity_new_communication.NewCommunicationActivity;
 import com.developer.enjad.databinding.ActivityHomeBinding;
 import com.developer.enjad.language.LanguageHelper;
+import com.developer.enjad.models.NewReport2;
+import com.developer.enjad.models.Reports_Model;
+import com.developer.enjad.models.UserModel;
+import com.developer.enjad.preferences.Preferences;
+import com.developer.enjad.tags.Tags;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -30,6 +37,14 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 import io.paperdb.Paper;
 
@@ -39,7 +54,11 @@ public class HomeActivity extends AppCompatActivity {
     int PERMISSION_ID = 44;
     FusedLocationProviderClient mFusedLocationClient;
     Double lat1, lng1, lat2, lng2;
-
+    private DatabaseReference dRef;
+    private List<Reports_Model> reports_modelList;
+    private Preferences preferences;
+    private UserModel userModel;
+    private FirebaseAuth mAuth;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -54,14 +73,20 @@ public class HomeActivity extends AppCompatActivity {
         initView();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getDataFromIntent();
-
         getLastLocation();
+        getLatLong();
 
     }
 
     private void initView() {
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
+        mAuth = FirebaseAuth.getInstance();
+        dRef = FirebaseDatabase.getInstance().getReference(Tags.DATABASE_NAME).child(Tags.TABLE_REPORTS);
+
+        preferences = Preferences.newInstance();
+        userModel = preferences.getUserData(this);
+        binding.setUserModel(userModel);
         binding.flNewComm.setOnClickListener(view -> {
             Intent intent = new Intent(this, NewCommunicationActivity.class);
             startActivity(intent);
@@ -74,6 +99,14 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
 
 
+        });
+
+        binding.cardLogout.setOnClickListener(view -> {
+            mAuth.signOut();
+            preferences.clear(this);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
     }
@@ -215,4 +248,31 @@ public class HomeActivity extends AppCompatActivity {
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
+
+    private void getLatLong()
+    {
+        dRef.child(Tags.TABLE_REPORTS)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                      //  binding.progBar.setVisibility(View.GONE);
+                        if (dataSnapshot.getValue()!=null)
+                        {
+                            for (DataSnapshot ds:dataSnapshot.getChildren())
+                            {
+                                Log.e("mmmmmmmmm", ds.getKey()+"");
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+
 }

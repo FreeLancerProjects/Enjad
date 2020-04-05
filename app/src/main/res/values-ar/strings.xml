@@ -32,4 +32,5 @@
     <string name="report_number">report number</string>
     <string name="distance">Distance</string>
     <string name="status">Status</string>
+    <string name="logout">Logout</string>
 </resources>

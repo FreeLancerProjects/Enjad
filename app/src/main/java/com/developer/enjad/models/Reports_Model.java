@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Reports_Model implements Serializable {
     private List<Data> data;
+
     public List<Data> getData() {
         return data;
     }
 
 
-
     public static class Data implements Serializable {
         private int number;
-private int distance;
-private String staus;
+        private int distance;
+        private String staus;
 
         public Data(int number, int distance, String staus) {
             this.number = number;

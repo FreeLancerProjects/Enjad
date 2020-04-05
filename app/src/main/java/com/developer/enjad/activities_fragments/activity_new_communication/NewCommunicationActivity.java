@@ -123,6 +123,8 @@ public class NewCommunicationActivity extends AppCompatActivity implements Liste
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("latitude",latitude);
         intent.putExtra("longitude",longitude);
+        intent.putExtra("number",newReport.getNumber());
+        intent.putExtra("status","1");
         startActivity(intent);
         finish();
 
