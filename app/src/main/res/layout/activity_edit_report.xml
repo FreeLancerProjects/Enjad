@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="lang"
+            type="String" />
+
+
+        <variable
+            name="backListener"
+            type="com.developer.enjad.interfaces.Listeners.BackListener" />
+
+
+
+
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +38,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:onClick="@{()->backListener.back()}"
+            >
 
             <ImageView
                 android:id="@+id/arrow"
@@ -29,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:clickable="false"
                 android:longClickable="false"
-                android:padding="15dp"
+                android:rotation='@{lang.equals("ar")?180:0}'
                 android:src="@drawable/ic_arrow_left"
                 android:tint="@color/white" />
 
@@ -143,3 +162,4 @@
         </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
