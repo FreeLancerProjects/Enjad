@@ -27,4 +27,8 @@
     <string name="wait">Wait...</string>
     <string name="user_not_found">User not found</string>
     <string name="inc_pass">Incorrect Password</string>
+    <string name="back">Back</string>
+    <string name="report_number">report number</string>
+    <string name="distance">Distance</string>
+    <string name="status">Status</string>
 </resources>
