@@ -4,37 +4,24 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.developer.enjad.R;
 import com.developer.enjad.activities_fragments.activity_home.HomeActivity;
-import com.developer.enjad.activities_fragments.activity_login.LoginActivity;
 import com.developer.enjad.databinding.ActivityNewCommunicationBinding;
-import com.developer.enjad.databinding.ActivitySignUpBinding;
 import com.developer.enjad.interfaces.Listeners;
 import com.developer.enjad.language.LanguageHelper;
 import com.developer.enjad.models.NewReport;
 import com.developer.enjad.models.NewReport2;
-import com.developer.enjad.models.SignUpModel;
 import com.developer.enjad.models.UserModel;
 import com.developer.enjad.preferences.Preferences;
 import com.developer.enjad.share.Common;
 import com.developer.enjad.tags.Tags;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mukesh.countrypicker.Country;
-import com.mukesh.countrypicker.CountryPicker;
-import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
-
-import java.util.Locale;
 
 import io.paperdb.Paper;
 
@@ -91,7 +78,7 @@ public class NewCommunicationActivity extends AppCompatActivity implements Liste
         String id = dRef.child(Tags.TABLE_REPORTS).child(userModel.getId()).push().getKey();
         NewReport2 newReport2 = new NewReport2(id,newReport.getNumber(),newReport.getLink());
 
-        dRef.child(Tags.TABLE_REPORTS).child(userModel.getId()).child(newReport2.getId()).setValue(newReport2)
+        dRef.child(Tags.TABLE_REPORTS).child(newReport2.getId()).setValue(newReport2)
                 .addOnSuccessListener(aVoid -> {
                     dialog.dismiss();
                     navigateToHomeActivity();

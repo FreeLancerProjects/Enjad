@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -12,9 +11,8 @@
 
 
         <variable
-            name="reportsmodel"
-            type="com.developer.enjad.models.Reports_Model.Data" />
-
+            name="model"
+            type="com.developer.enjad.models.ReportModel" />
 
 
     </data>
@@ -41,7 +39,7 @@
                 android:layout_gravity="center"
                 android:background="@color/gray3"
                 android:gravity="center"
-                android:text='@{reportsmodel.number+""}'
+                android:text='@{model.number+""}'
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -65,7 +63,7 @@
                 android:layout_gravity="center"
                 android:background="@color/gray3"
                 android:gravity="center"
-                android:text='@{reportsmodel.distance+""}'
+                android:text='@{model.distance}'
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
@@ -89,7 +87,7 @@
                 android:layout_gravity="center"
                 android:background="@color/gray3"
                 android:gravity="center"
-                android:text='@{reportsmodel.staus+""}'
+                android:text="قائم"
 
                 android:textColor="@color/black"
                 android:textSize="15sp" />

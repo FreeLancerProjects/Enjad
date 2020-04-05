@@ -1,20 +1,17 @@
 package com.developer.enjad.adapter;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.developer.enjad.R;
 import com.developer.enjad.databinding.ReportRow2Binding;
 import com.developer.enjad.databinding.ReportRowBinding;
-import com.developer.enjad.models.Reports_Model;
-
+import com.developer.enjad.models.ReportModel;
 
 import java.util.List;
 
@@ -22,9 +19,10 @@ public class ReportsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final int ITEM_DATA = 1;
     private final int ITEM_DATA2 = 2;
 
-    private List<Reports_Model.Data> dataList;
+    private List<ReportModel> dataList;
     private Context context;
-    public ReportsAdapter(Context context, List<Reports_Model.Data> dataList) {
+
+    public ReportsAdapter(Context context, List<ReportModel> dataList) {
 
         this.dataList = dataList;
         this.context = context;
@@ -50,11 +48,11 @@ public class ReportsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof MyHolder) {
 
             MyHolder myHolder = (MyHolder) holder;
-            myHolder.binding.setReportsmodel(dataList.get(position));
+            myHolder.binding.setModel(dataList.get(position));
 
         } else {
             MyHolder2 myHolder2 = (MyHolder2) holder;
-            myHolder2.binding.setReportsmodel(dataList.get(position));
+            myHolder2.binding.setModel(dataList.get(position));
 
         }
     }
