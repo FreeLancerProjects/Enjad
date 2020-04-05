@@ -38,12 +38,12 @@ public class HomeActivity extends AppCompatActivity {
     private String lang;
     int PERMISSION_ID = 44;
     FusedLocationProviderClient mFusedLocationClient;
-
+    Double lat1, lng1, lat2, lng2;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang","ar")));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
 
     @Override
@@ -53,12 +53,14 @@ public class HomeActivity extends AppCompatActivity {
 
         initView();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getDataFromIntent();
 
         getLastLocation();
+
     }
 
     private void initView() {
-        lang = Paper.book().read("lang","ar");
+        lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.flNewComm.setOnClickListener(view -> {
             Intent intent = new Intent(this, NewCommunicationActivity.class);
@@ -75,14 +77,35 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
-    private boolean checkPermissions(){
+
+    private void getDataFromIntent() {
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("latitude")) {
+            String latitude = intent.getStringExtra("latitude");
+            String longitude = intent.getStringExtra("longitude");
+            lat2 = Double.parseDouble(latitude);
+            lng2 = Double.parseDouble(longitude);
+//            Log.e("lat",lat2+"");
+//            Log.e("lat",lng2+"");
+//            Log.e("lat1",lat1+"");
+//            Log.e("lat1",lng1+"");
+
+        }else {
+            lat2 =26.254;
+            lng2 = 46.515;
+        }
+    }
+
+    private boolean checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         return false;
     }
-    private void requestPermissions(){
+
+    private void requestPermissions() {
         ActivityCompat.requestPermissions(
                 this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
@@ -94,13 +117,13 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_ID) {
-            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Granted. Start getting the location information
             }
         }
     }
 
-    private boolean isLocationEnabled(){
+    private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
                 LocationManager.NETWORK_PROVIDER
@@ -108,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("MissingPermission")
-    private void getLastLocation(){
+    private void getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(
@@ -119,9 +142,13 @@ public class HomeActivity extends AppCompatActivity {
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
+                                    lat1 = location.getLatitude();
+                                    lng1 = location.getLongitude();
 
-                                    Log.e("eeeeee",location.getLatitude()+""+location.getLongitude());
-                                    Toast.makeText(HomeActivity.this, location.getLatitude()+""+location.getLongitude(), Toast.LENGTH_SHORT).show();
+                                    distance(lat1, lng1, lat2,lng2 );
+//                                    Log.e("nnnn",lat1+"  lat2 "+lat2+"   lng2"+lng2);
+//                                    Log.e("eeeeee", location.getLatitude() + "" + location.getLongitude());
+//                                    Toast.makeText(HomeActivity.this, location.getLatitude() + "" + location.getLongitude(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -137,7 +164,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("MissingPermission")
-    private void requestNewLocationData(){
+    private void requestNewLocationData() {
 
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -152,13 +179,40 @@ public class HomeActivity extends AppCompatActivity {
         );
 
     }
+
     private LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-            Log.e("mmmmm",mLastLocation.getLatitude()+""+mLastLocation.getLongitude());
-            Toast.makeText(HomeActivity.this, mLastLocation.getLatitude()+""+mLastLocation.getLongitude()+"", Toast.LENGTH_SHORT).show();
+            Log.e("mmmmm", mLastLocation.getLatitude() + "" + mLastLocation.getLongitude());
+            lat1=mLastLocation.getLatitude();
+            lng1=mLastLocation.getLongitude();
+
+            Toast.makeText(HomeActivity.this, mLastLocation.getLatitude() + "" + mLastLocation.getLongitude() + "", Toast.LENGTH_SHORT).show();
 
         }
     };
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        Log.e("distance",dist+"");
+
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
 }

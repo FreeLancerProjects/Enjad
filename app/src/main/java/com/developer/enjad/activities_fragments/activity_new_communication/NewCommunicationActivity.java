@@ -111,14 +111,22 @@ public class NewCommunicationActivity extends AppCompatActivity implements Liste
 
 
     private void navigateToHomeActivity(){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
         String lat=  newReport.getLink().substring(newReport.getLink().indexOf("!3d"),newReport.getLink().indexOf("!4d"));
         String lng=  newReport.getLink().substring(newReport.getLink().indexOf("!4d"));
 
-        Log.e("llll",lng);
-        Log.e("fffffffff",lat);
+        String[] lngs = lng.split("d");
+        String[] lats = lat.split("d");
+
+        String latitude = lats[1];
+        String longitude = lngs[1];
+
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("latitude",latitude);
+        intent.putExtra("longitude",longitude);
+        startActivity(intent);
+        finish();
+
+
     }
 
 
